@@ -6,6 +6,7 @@ import { mkdirp } from './utils/index.js';
 import { cacheDir } from './paths';
 import createLogger from './createLogger';
 import del from 'del';
+import Promise from 'bluebird';
 
 export const HASH_FILENAME = 'lastHash';
 
@@ -42,26 +43,27 @@ export const compile = (settings, getCompiler) => () => {
   });
 };
 
-const getContents = watchPath => {
-  try {
-    if (fs.existsSync(watchPath)) {
-      if (fs.lstatSync(watchPath).isDirectory()) {
-        if (watchPath.startsWith(cacheDir)) {
-          return '';
-        }
-        return fs
-          .readdirSync(watchPath)
-          .map(p => getContents(path.join(watchPath, p)))
-          .join('');
-      } else {
-        return fs.readFileSync(watchPath, 'utf-8');
-      }
-    }
-  } catch (e) {
-    //Failed to read file, fallback to string
-    return ''; 
-  }
-};
+const getContents = watchPath =>
+  fs
+    .statAsync(watchPath)
+    .then(
+      stats =>
+        stats.isDirectory()
+          ? watchPath.startsWith(cacheDir)
+            ? ''
+            : fs
+                .readdirAsync(watchPath)
+                .then(files =>
+                  Promise.mapSeries(files, p =>
+                    getContents(path.join(watchPath, p))
+                  )
+                ).then(res => res.join(''))
+          : fs.readFileAsync(watchPath, 'utf-8')
+    )
+    .catch(err => {
+      console.error(err ? err.message : err);
+      return '';
+    });
 
 export const getHash = settings => {
   const hash = crypto.createHash('md5');
@@ -70,26 +72,29 @@ export const getHash = settings => {
   hash.update(settingsJSON);
 
   if (Array.isArray(settings.watch)) {
-    hash.update(settings.watch.map(getContents).join(''));
+    return Promise.all(settings.watch.map(getContents))
+      .then(res => hash.update(res.join('')))
+      .then(() => hash.digest('hex'));
   }
-  return hash.digest('hex');
+  return Promise.resolve(hash.digest('hex'));
 };
 
 const compileIfNeeded = (settings, getCompiler) => {
   const log = createLogger(settings.debug);
-  const currentHash = getHash(settings);
-  return isCacheValid(currentHash)
-    .then(log.tap(isValid => `is valid cache? ${isValid}`))
-    .then(isValid => {
-      if (isValid) return;
+  return getHash(settings).then(currentHash =>
+    isCacheValid(currentHash)
+      .then(log.tap(isValid => `is valid cache? ${isValid}`))
+      .then(isValid => {
+        if (isValid) return;
 
-      return Promise.resolve()
-        .then(log.tap('cleanup'))
-        .then(cleanup)
-        .then(log.tap('compile'))
-        .then(compile(settings, getCompiler))
-        .then(storeHash(currentHash));
-    });
+        return Promise.resolve()
+          .then(log.tap('cleanup'))
+          .then(cleanup)
+          .then(log.tap('compile'))
+          .then(compile(settings, getCompiler))
+          .then(storeHash(currentHash));
+      })
+  );
 };
 
 export default compileIfNeeded;

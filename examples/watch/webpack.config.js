@@ -38,6 +38,7 @@ module.exports = {
         path.resolve('yarn.lock'),
         path.resolve('node_modules'),
         path.resolve('webpack.config.js'),
+        path.resolve('blabla.js'), //check for unresolved path
       ],
       debug: true,
       inject: true,
