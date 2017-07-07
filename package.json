@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "format": "prettier --trailing-comma es5 --single-quote --write 'src/**/*.js' 'examples/*/src/**/*.js' 'specs/**/*.js'",
-    "lint": "eslint src specs",
+    "lint": "eslint src specs examples",
     "lint:fix": "npm run lint -- --fix",
     "lint-staged": "lint-staged",
     "test": "babel-node ./node_modules/.bin/tape specs/**/*.spec.js | faucet",
@@ -61,7 +61,7 @@
     "faucet": "^0.0.1",
     "lint-staged": "^4.0.0",
     "pre-commit": "^1.2.2",
-    "prettier": "^1.5.2",
+    "prettier": "1.5.2",
     "recursive-readdir": "^2.2.1",
     "spy": "^1.0.0",
     "tape": "^4.7.0"
