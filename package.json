@@ -4,6 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
+    "format": "prettier --trailing-comma es5 --single-quote --write 'src/**/*.js' 'examples/*/src/**/*.js' 'specs/**/*.js'",
     "lint": "eslint src specs",
     "lint:fix": "npm run lint -- --fix",
     "lint-staged": "lint-staged",
@@ -21,15 +22,25 @@
   ],
   "lint-staged": {
     "src/**/*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
       "eslint --fix",
       "git add"
     ],
     "specs/**/*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "examples/**/*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
       "eslint --fix",
       "git add"
     ]
   },
-  "pre-commit": ["lint-staged", "test"],
+  "pre-commit": [
+    "lint-staged",
+    "test"
+  ],
   "dependencies": {
     "bluebird": "^3.5.0",
     "del": "^3.0.0",
@@ -50,6 +61,7 @@
     "faucet": "^0.0.1",
     "lint-staged": "^4.0.0",
     "pre-commit": "^1.2.2",
+    "prettier": "^1.5.2",
     "recursive-readdir": "^2.2.1",
     "spy": "^1.0.0",
     "tape": "^4.7.0"
