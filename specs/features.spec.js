@@ -6,20 +6,30 @@ import path from 'path';
 import del from 'del';
 
 const watchExamplesDirectory = path.resolve(path.join('examples', 'watch'));
+const watchExamplesNodeModulesDirectory = path.resolve(
+  path.join(watchExamplesDirectory, 'node_modules')
+);
 
 const cacheDirectory = path.resolve(
   path.join(
-    watchExamplesDirectory,
-    'node_modules',
+    watchExamplesNodeModulesDirectory,
     '.cache',
     'autodll-webpack-plugin'
   )
 );
 
-const runBuild = () => execSync(pkg.scripts.build);
+const install = () => {
+  if (!fs.existsSync(watchExamplesNodeModulesDirectory)) {
+    execSync('npm install');
+  }
+};
+const runBuild = () => {
+  execSync(pkg.scripts.build);
+};
 test('It should invalidate the cache when files in node_modules is changed', t => {
   del(cacheDirectory).then(() => {
     process.chdir(watchExamplesDirectory);
+    install();
     runBuild();
     const firstCacheFiles = fs.readdirSync(cacheDirectory);
     fs.writeFileSync(
