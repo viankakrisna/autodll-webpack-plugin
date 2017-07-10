@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import fs from './utils/fs';
 import { cacheDir } from './paths';
 
-const getSources = (watchPaths, sourceMethod) => {
+export const getSources = (watchPaths, sourceMethod) => {
   const getSource = watchPath => {
     try {
       if (fs.existsSync(watchPath)) {
@@ -28,7 +28,7 @@ const getSources = (watchPaths, sourceMethod) => {
   return watchPaths.map(getSource).join('');
 };
 
-const getSourceMethod = key => {
+export const getSourceMethod = key => {
   switch (key) {
   case 'content':
     return filePath => fs.readFileSync(filePath, 'utf-8');
