@@ -18,29 +18,25 @@ const cacheDirectory = path.resolve(
   )
 );
 
-const install = () => {
-  if (!fs.existsSync(watchExamplesNodeModulesDirectory)) {
-    execSync('npm install');
-  }
-};
-const runBuild = () => {
-  execSync(pkg.scripts.build);
-};
+const install = () =>
+  fs.existsSync(watchExamplesNodeModulesDirectory)
+    ? null
+    : execSync('npm install');
+
+const build = () => execSync(pkg.scripts.build);
+
 test('It should invalidate the cache when files in node_modules is changed', t => {
   del(cacheDirectory).then(() => {
     process.chdir(watchExamplesDirectory);
     install();
-    runBuild();
+    build();
     const firstCacheFiles = fs.readdirSync(cacheDirectory);
+    const invalidate = `invalidate${Math.random()}`;
     fs.writeFileSync(
-      path.join(
-        watchExamplesDirectory,
-        'node_modules',
-        `invalidate${Math.random()}`
-      ),
-      `invalidate${Math.random()}`
+      path.join(watchExamplesNodeModulesDirectory, invalidate),
+      invalidate
     );
-    runBuild();
+    build();
     const secondCacheFiles = fs.readdirSync(cacheDirectory);
     t.notDeepEqual(
       firstCacheFiles,
