@@ -7,25 +7,27 @@ import { cacheDir } from './paths';
 export const getSources = (watchPaths, sourceMethod) => {
   const getSource = watchPath => {
     try {
-      if (fs.existsSync(watchPath)) {
-        if (fs.lstatSync(watchPath).isDirectory()) {
-          if (watchPath.startsWith(cacheDir)) {
-            return '';
-          }
-          return fs
-            .readdirSync(watchPath)
-            .map(p => getSource(path.join(watchPath, p)))
-            .join('');
-        } else {
-          return sourceMethod(watchPath);
+      if (fs.lstatSync(watchPath).isDirectory()) {
+        if (watchPath.startsWith(cacheDir)) {
+          return watchPath;
         }
+        const fileList = fs.readdirSync(watchPath);
+        return getSources(
+          fileList.map(file => path.join(watchPath, file)),
+          sourceMethod
+        );
+      } else {
+        return sourceMethod(watchPath);
       }
     } catch (ignored) {
-      // Just fallback to empty string below
+      return watchPath;
     }
-    return '';
   };
-  return watchPaths.map(getSource).join('');
+  let result = '';
+  for (let i = watchPaths.length - 1; i >= 0; i--) {
+    result += getSource(watchPaths[i]);
+  }
+  return result;
 };
 
 export const getSourceMethod = key => {
