@@ -1,9 +1,26 @@
 # Change log
 
+## Next release
+
+#### Documentation:
+- Add Options table
+- Add FAQ section
+
+#### Internal:
+- [#38](https://github.com/asfktz/autodll-webpack-plugin/pull/38) Fix test script on windows. [@sudo-suhas](https://github.com/sudo-suhas) <br>
+Related to [#9](https://github.com/asfktz/autodll-webpack-plugin/issues/9).
+- Moving from tape to ava, preparing the ground for integration tests. [@asfktz](https://github.com/asfktz)
+
+#### Committers:
+- Suhas Karanth ([@sudo-suhas](https://github.com/sudo-suhas))
+
 ## 0.2.1
 
 #### Internal:
-- Add webpack as `devDependencies` for testing [@asfktz](https://github.com/asfktz)
+- Add webpack as `devDependencies` for testing. [@asfktz](https://github.com/asfktz)
+
+#### Committers:
+- Asaf Katz ([@asfktz](https://github.com/asfktz))
 
 ## 0.2.0
 
@@ -11,10 +28,12 @@
 - [#36](https://github.com/asfktz/autodll-webpack-plugin/issues/36) Instance index is wrong when other plugins are used. [@asfktz](https://github.com/asfktz)
 
 #### Internal:
-- Move webpack from `dependencies` to `peerDependencies`. [@asfktz](https://github.com/asfktz) <br>
-  Related to [#30](https://github.com/asfktz/autodll-webpack-plugin/issues/30#issuecomment-314489292) [breaking change]
+- **[breaking change]** Move webpack from `dependencies` to `peerDependencies`. [@asfktz](https://github.com/asfktz) <br>
+  Related to [#30](https://github.com/asfktz/autodll-webpack-plugin/issues/30#issuecomment-314489292)
 - Remove `yarn.lock` from examples. [@asfktz](https://github.com/asfktz)
 
+#### Committers:
+- Asaf Katz ([@asfktz](https://github.com/asfktz))
 
 ## 0.1.0
 
@@ -24,7 +43,7 @@
 - AutoDLL's is not playing nicely with other plugins which integrate with html-webpack-plugin [@asfktz](https://github.com/asfktz)
 
 #### Enhancement:
-- AutoDll's `.cache` dir now stores each instance files in it's own seperate subdirectory. [@viankakrisna](https://github.com/viankakrisna)
+- **[breaking change]** AutoDll's `.cache` dir now stores each instance files in it's own seperate subdirectory. [@viankakrisna](https://github.com/viankakrisna)
 - Context is now defaults to `process.cwd()` [@asfktz](https://github.com/asfktz)
 
 #### Documentation:

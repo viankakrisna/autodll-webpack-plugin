@@ -1,4 +1,4 @@
-import test from 'tape';
+import test from 'ava';
 import normalizeEntry from '../src/normalizeEntry';
 
 test('normalizeEntry: should exclude empty bundles', (t) => {
@@ -9,15 +9,7 @@ test('normalizeEntry: should exclude empty bundles', (t) => {
     realBundle: ['test']
   });
 
-  t.same(results, {
+  t.deepEqual(results, {
     realBundle: ['test']
   });
-
-  t.end();
-});
-
-
-test('normalizeEntry: should return {} when received {}', (t) => {
-  t.same(normalizeEntry({}), {});
-  t.end();
 });
