@@ -1,4 +1,4 @@
-import test from 'tape';
+import test from 'ava';
 import path from 'path';
 import fs from '../src/utils/fs';
 import createHash, { getSources, getSourceMethod } from '../src/createHash';
@@ -17,7 +17,7 @@ const settings = {
 
 const getRandomString = () => `randomString_${Math.random()}`;
 
-test('createHash should create new hash when files in watch directory is changed', t => {
+test.cb('createHash should create new hash when files in watch directory is changed', t => {
   var firstHash, secondHash;
   makedir(testDirectory).then(() => {
     fs
@@ -34,7 +34,7 @@ test('createHash should create new hash when files in watch directory is changed
       })
       .then(() => {
         secondHash = createHash(settings);
-        t.notEqual(
+        t.not(
           firstHash,
           secondHash,
           `hashes should not be the same: 
@@ -46,7 +46,7 @@ test('createHash should create new hash when files in watch directory is changed
   });
 });
 
-test('getSources should create new source when files in watch directory is changed', t => {
+test.cb('getSources should create new source when files in watch directory is changed', t => {
   makedir(testDirectory).then(() => {
     var firstSource, secondSource;
 
@@ -64,7 +64,7 @@ test('getSources should create new source when files in watch directory is chang
       })
       .then(() => {
         secondSource = getSources(settings.watch, getSourceMethod('content'));
-        t.notEqual(
+        t.not(
           firstSource,
           secondSource,
           `sources should not be the same: 
@@ -77,6 +77,5 @@ test('getSources should create new source when files in watch directory is chang
 });
 
 test('getSourceMethod should return a function', t => {
-  t.equal(typeof getSourceMethod(), 'function');
-  t.end();
+  t.is(typeof getSourceMethod(), 'function');
 });

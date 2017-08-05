@@ -57,6 +57,7 @@
     "html-webpack-plugin": "^2.29.0",
     "husky": "^0.14.3",
     "lint-staged": "^4.0.0",
+    "pre-commit": "^1.2.2",
     "recursive-readdir": "^2.2.1",
     "spy": "^1.0.0",
     "uglifyjs-webpack-plugin": "^0.4.6",
