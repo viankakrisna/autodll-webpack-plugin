@@ -1,5 +1,3 @@
-import keys from 'lodash/keys';
-import isArray from 'lodash/isArray';
 import isPlainObject from 'lodash/isPlainObject';
 
 // The point of normalizeEntry is to be a little bit more forgiving than how webpack treats its entries.
@@ -10,8 +8,8 @@ const normalizeEntry = entries => {
     return entries;
   }
 
-  return keys(entries).reduce((validEntries, key) => {
-    if (isArray(entries[key]) && entries[key].length) {
+  return Object.keys(entries).reduce((validEntries, key) => {
+    if (Array.isArray(entries[key]) && entries[key].length) {
       validEntries[key] = entries[key];
     }
 

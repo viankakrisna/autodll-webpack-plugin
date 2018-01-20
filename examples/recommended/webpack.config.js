@@ -1,5 +1,5 @@
 const path = require('path');
-const AutoDllPlugin = require('autodll-webpack-plugin');
+const AutoDllPlugin = require('../../lib');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
 
   plugins: [
@@ -22,12 +22,8 @@ module.exports = {
       filename: '[name]_[hash].js',
       path: './dll',
       entry: {
-        vendor: [
-          'react',
-          'react-dom',
-          'moment'
-        ]
-      }
-    })
-  ]
+        vendor: ['react', 'react-dom'],
+      },
+    }),
+  ],
 };

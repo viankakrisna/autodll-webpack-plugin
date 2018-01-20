@@ -9,12 +9,10 @@
   },
   "devDependencies": {
     "html-webpack-plugin": "^2.29.0",
-    "autodll-webpack-plugin": "latest",
     "webpack-dev-server": "^2.5.0",
     "webpack": "^3.1.0"
   },
   "dependencies": {
-    "moment": "^2.18.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   }

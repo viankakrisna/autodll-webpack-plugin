@@ -2,7 +2,6 @@ import axios from 'axios';
 import Draft from 'draft-js';
 import howler from 'howler';
 import Immutable from 'immutable';
-import moment from 'moment';
 import Pixi from 'pixi.js';
 import polished from 'polished';
 import React from 'react';
@@ -22,15 +21,11 @@ export default () => {
     <div>
       <h1>AutoDllPlugin Performance Test</h1>
       <p>
-        1. Open ./src/App.js and change this Text to see how long it takes for webpack to build when AutoDllPlugin is active.
+        1. Open ./src/App.js and change this Text to see how long it takes for webpack to build when
+        AutoDllPlugin is active.
       </p>
-      <p>
-        2. Then go to ./webpack.config.js, remove the Plugin, and try again.
-      </p>
-      <p>
-        Note: Look for the word "Time:" in your terminal output, to see long each build took.
-      </p>
+      <p>2. Then go to ./webpack.config.js, remove the Plugin, and try again.</p>
+      <p>Note: Look for the word "Time:" in your terminal output, to see long each build took.</p>
     </div>
-  )
+  );
 };
-
